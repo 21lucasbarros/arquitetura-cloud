@@ -1,0 +1,429 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "perfil",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ded132d3-3bd4-44d0-980e-10d99ac1b8e2",
+      "name": "Webhook",
+      "webhookId": "1c28c340-895b-49f4-9814-451429469505",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "wH1LtDXxghi2XY7n",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "7f68aed9-93fb-4f1e-be3c-e8f86156e1f0",
+              "leftValue": "={{ $json.headers['x-pedido-id'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        224,
+        0
+      ],
+      "id": "19012e3d-50dc-4bb4-abc7-e3857b680e5e",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"erro\": \"payload invalido\",\n  \"detalhe\": \"Header x-pedido-id e obrigatorio\"\n}",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        448,
+        96
+      ],
+      "id": "5f67c3da-b11f-47a9-9cfc-da9bb228c3c2",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT nome, perfil, email FROM usuarios_pzaas WHERE token = $1",
+        "options": {
+          "queryReplacement": "={{ $json.body.token }}"
+        }
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.7,
+      "position": [
+        448,
+        -96
+      ],
+      "id": "e7878a25-e725-4f99-8b33-778007dcedb0",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "1HdoTIWSZSalvKSY",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "health",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        -368
+      ],
+      "id": "e530943b-76ca-4f97-a92c-96380266f2b9",
+      "name": "Webhook1",
+      "webhookId": "67b44efd-cc94-47d3-985c-c4eb1f9e612c",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "wH1LtDXxghi2XY7n",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "7f68aed9-93fb-4f1e-be3c-e8f86156e1f0",
+              "leftValue": "={{ $json.headers['x-pedido-id'] }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        224,
+        -368
+      ],
+      "id": "d1244dec-d464-4507-b4f6-4e06faf9fb75",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"erro\": \"payload invalido\",\n  \"detalhe\": \"Header x-pedido-id e obrigatorio\"\n}",
+        "options": {
+          "responseCode": 400
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        448,
+        -304
+      ],
+      "id": "5a2ab038-15a4-4d8e-bd7d-7714d3ddc0d2",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"tudo certo\"\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        448,
+        -448
+      ],
+      "id": "1b928ef1-21b3-461e-a473-f9220e79216f",
+      "name": "Respond to Webhook2"
+    },
+    {
+      "parameters": {
+        "content": "## /health",
+        "height": 80,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -464
+      ],
+      "id": "d426da0a-ec13-4670-a77d-1fca0890e734",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "aeb8093b-c5a5-4df4-802b-6e564e208474",
+              "name": "nome",
+              "value": "={{ $json.nome }}",
+              "type": "string"
+            },
+            {
+              "id": "748a955c-0e0c-40ab-8ced-d55223f1e2ba",
+              "name": "perfil",
+              "value": "={{ $json.perfil }}",
+              "type": "string"
+            },
+            {
+              "id": "700a0cb4-e20b-4528-ac7e-fe4ce00e61b8",
+              "name": "email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        672,
+        -96
+      ],
+      "id": "b8d2b4bd-e93b-4bfb-a9ef-b24cad62354b",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        896,
+        -96
+      ],
+      "id": "f39b06cd-e9aa-4532-83fa-1bc96e91589e",
+      "name": "Respond to Webhook3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:5678/webhook/logs",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"eventId\": \"{{ $execution.id }}\",\n  \"service\": \"8\",\n  \"action\": \"CONSULTAR_PERFIL\",\n  \"status\": \"SUCCESS\",\n  \"level\": \"INFO\",\n  \"message\": \"Perfil de usuário consultado com sucesso\",\n  \"orderId\": \"{{ $('Webhook').item.json.headers['x-pedido-id'] }}\",\n  \"metadata\": {\n    \"emailConsultado\": \"{{ $json.email }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        1120,
+        -96
+      ],
+      "id": "c27c3ae2-b2cf-4c5e-8458-6370d6889681",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "wH1LtDXxghi2XY7n",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://localhost:5678/webhook/logs",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"eventId\": \"{{ $execution.id }}\",\n  \"service\": \"8\",\n  \"action\": \"VALIDAR_CABECALHO\",\n  \"status\": \"FAILED\",\n  \"level\": \"WARN\",\n  \"message\": \"Tentativa de acesso sem o header obrigatorio x-pedido-id\",\n  \"orderId\": null\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        672,
+        96
+      ],
+      "id": "2dc14074-98e6-4cb1-a1a7-7bde79adf0be",
+      "name": "HTTP Request1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "wH1LtDXxghi2XY7n",
+          "name": "Header Auth account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "d03c6a84-ff26-48dd-8ef8-d99eebea5e58",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c41244410a154e1759d7131f52e624ff4a17acef986ca27e83da7a470e6caea3"
+  },
+  "nodeGroups": [],
+  "id": "szztbEqCrCOZjUFW",
+  "tags": []
+}
