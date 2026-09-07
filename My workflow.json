@@ -4,7 +4,7 @@
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "perfil",
+        "path": "cadastro/perfil",
         "authentication": "headerAuth",
         "responseMode": "responseNode",
         "options": {}
@@ -101,7 +101,7 @@
     },
     {
       "parameters": {
-        "path": "health",
+        "path": "cadastro/health",
         "authentication": "headerAuth",
         "responseMode": "responseNode",
         "options": {}
@@ -418,7 +418,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "d03c6a84-ff26-48dd-8ef8-d99eebea5e58",
+  "versionId": "7ce8737e-4567-48f8-b7e1-3ce840f980a2",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "c41244410a154e1759d7131f52e624ff4a17acef986ca27e83da7a470e6caea3"

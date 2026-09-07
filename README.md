@@ -21,7 +21,7 @@ O **Serviço 08** tem como principal objetivo fornecer a identidade e os perfis 
 
 O microsserviço possui duas rotas principais rodando de forma isolada e paralela:
 
-### `GET /health` (Healthcheck)
+### `GET /cadastro/health` (Healthcheck)
 
 - **Objetivo**: Verificar se o microsserviço está online e operando corretamente.
 
@@ -29,7 +29,7 @@ O microsserviço possui duas rotas principais rodando de forma isolada e paralel
 
 - **Resposta de Sucesso**: `HTTP 200 OK` informando que está tudo certo.
 
-### `POST /perfil` (Consulta de Perfil)
+### `POST /cadastro/perfil` (Consulta de Perfil)
 
 - **Objetivo**: Receber um token de acesso, consultá-lo na base de dados e retornar as informações detalhadas do usuário.
 
@@ -69,7 +69,7 @@ Para garantir a padronização entre todos os microsserviços da arquitetura da 
 
 Em conformidade com os padrões da arquitetura distribuída, o serviço implementa **observabilidade assíncrona**:
 
-- Cada operação bem-sucedida ou falha de validação dispara automaticamente um log estruturado em segundo plano (`POST /v1/logs`) para o microsserviço de Logger da turma.
+- Cada operação bem-sucedida ou falha de validação dispara automaticamente um log estruturado em segundo plano (`POST /logs`) para o microsserviço de Logger da turma.
 
 - O serviço é identificado no ecossistema global pelo **ID 8** (Cadastro/Identidade).
 
@@ -79,14 +79,14 @@ Em conformidade com os padrões da arquitetura distribuída, o serviço implemen
 
 Para testar o microsserviço localmente, utilize os seguintes parâmetros:
 
-1. **Testando a Saúde da API (`GET /health`)**:
+1. **Testando a Saúde da API (`GET /cadastro/health`)**:
 
-- **URL**: `http://localhost:5678/webhook/health`
+- **URL**: `http://localhost:5678/webhook/cadastro/health`
 - **Headers**: `x-api-key: turma2026` e `x-pedido-id: 2332`
 
-2. **Consultando o Perfil (`POST /perfil`)**:
+2. **Consultando o Perfil (`POST /cadastro/perfil`)**:
 
-- **URL**: `http://localhost:5678/webhook/perfil`
+- **URL**: `http://localhost:5678/webhook/cadastro/perfil`
 - **Headers**: `Content-Type: application/json`, `x-api-key: turma2026`, `x-pedido-id: 2332`
 
 - **Body**: `{"token": "token123"}`
