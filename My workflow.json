@@ -1,10 +1,10 @@
 {
-  "name": "My workflow",
+  "name": "Lucas Barros & Osi Paes",
   "nodes": [
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "cadastro/perfil",
+        "path": "cadastro_b/perfil",
         "authentication": "headerAuth",
         "responseMode": "responseNode",
         "options": {}
@@ -13,15 +13,15 @@
       "typeVersion": 2.1,
       "position": [
         0,
-        0
+        464
       ],
-      "id": "ded132d3-3bd4-44d0-980e-10d99ac1b8e2",
+      "id": "4f0933f9-2101-4234-847b-1e38f679f026",
       "name": "Webhook",
       "webhookId": "1c28c340-895b-49f4-9814-451429469505",
       "credentials": {
         "httpHeaderAuth": {
-          "id": "wH1LtDXxghi2XY7n",
-          "name": "Header Auth account"
+          "id": "IPctxAcYwUlITiwD",
+          "name": "Header Auth account 3"
         }
       }
     },
@@ -54,9 +54,9 @@
       "typeVersion": 2.3,
       "position": [
         224,
-        0
+        464
       ],
-      "id": "19012e3d-50dc-4bb4-abc7-e3857b680e5e",
+      "id": "73b9580c-35ac-4712-8b53-0933f376c168",
       "name": "If"
     },
     {
@@ -71,9 +71,9 @@
       "typeVersion": 1.5,
       "position": [
         448,
-        96
+        560
       ],
-      "id": "5f67c3da-b11f-47a9-9cfc-da9bb228c3c2",
+      "id": "4e5ce1d3-8eaf-4a4b-9aec-1a837cdf0bc8",
       "name": "Respond to Webhook"
     },
     {
@@ -88,20 +88,20 @@
       "typeVersion": 2.7,
       "position": [
         448,
-        -96
+        368
       ],
-      "id": "e7878a25-e725-4f99-8b33-778007dcedb0",
+      "id": "04d8ab4d-8f11-4d07-9a81-36dfe465b171",
       "name": "Execute a SQL query",
       "credentials": {
         "postgres": {
-          "id": "1HdoTIWSZSalvKSY",
-          "name": "Postgres account"
+          "id": "WWY3I9dfNUxXHTjR",
+          "name": "Postgres account 4"
         }
       }
     },
     {
       "parameters": {
-        "path": "cadastro/health",
+        "path": "cadastro_b/health",
         "authentication": "headerAuth",
         "responseMode": "responseNode",
         "options": {}
@@ -110,15 +110,15 @@
       "typeVersion": 2.1,
       "position": [
         0,
-        -368
+        96
       ],
-      "id": "e530943b-76ca-4f97-a92c-96380266f2b9",
+      "id": "415366cc-cbdb-41a2-beb3-cfd49db84288",
       "name": "Webhook1",
       "webhookId": "67b44efd-cc94-47d3-985c-c4eb1f9e612c",
       "credentials": {
         "httpHeaderAuth": {
-          "id": "wH1LtDXxghi2XY7n",
-          "name": "Header Auth account"
+          "id": "IPctxAcYwUlITiwD",
+          "name": "Header Auth account 3"
         }
       }
     },
@@ -151,9 +151,9 @@
       "typeVersion": 2.3,
       "position": [
         224,
-        -368
+        96
       ],
-      "id": "d1244dec-d464-4507-b4f6-4e06faf9fb75",
+      "id": "1e3472d7-96c9-440c-b952-64ddc8a0e8ff",
       "name": "If1"
     },
     {
@@ -168,9 +168,9 @@
       "typeVersion": 1.5,
       "position": [
         448,
-        -304
+        160
       ],
-      "id": "5a2ab038-15a4-4d8e-bd7d-7714d3ddc0d2",
+      "id": "d560d57b-8fd5-4460-86d5-ab46cbbe30c9",
       "name": "Respond to Webhook1"
     },
     {
@@ -185,9 +185,9 @@
       "typeVersion": 1.5,
       "position": [
         448,
-        -448
+        16
       ],
-      "id": "1b928ef1-21b3-461e-a473-f9220e79216f",
+      "id": "329f3189-80d7-486f-a014-ca52421c1aaf",
       "name": "Respond to Webhook2"
     },
     {
@@ -200,9 +200,9 @@
       "typeVersion": 1,
       "position": [
         0,
-        -464
+        0
       ],
-      "id": "d426da0a-ec13-4670-a77d-1fca0890e734",
+      "id": "56ef2c55-fa6e-4e8c-9662-64e82f293413",
       "name": "Sticky Note"
     },
     {
@@ -235,9 +235,9 @@
       "typeVersion": 3.5,
       "position": [
         672,
-        -96
+        368
       ],
-      "id": "b8d2b4bd-e93b-4bfb-a9ef-b24cad62354b",
+      "id": "6f57a895-1dc1-4fbe-92a4-5940939cacf3",
       "name": "Edit Fields"
     },
     {
@@ -250,15 +250,15 @@
       "typeVersion": 1.5,
       "position": [
         896,
-        -96
+        368
       ],
-      "id": "f39b06cd-e9aa-4532-83fa-1bc96e91589e",
+      "id": "6350bbdf-842a-439f-8420-2fa2801a2f0f",
       "name": "Respond to Webhook3"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "http://localhost:5678/webhook/logs",
+        "url": "https://pzaas.online/webhook/logs",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
@@ -270,21 +270,21 @@
       "typeVersion": 4.5,
       "position": [
         1120,
-        -96
+        368
       ],
-      "id": "c27c3ae2-b2cf-4c5e-8458-6370d6889681",
+      "id": "1cf1bd23-8c01-462c-9006-ea5c5ca53c9c",
       "name": "HTTP Request",
       "credentials": {
         "httpHeaderAuth": {
-          "id": "wH1LtDXxghi2XY7n",
-          "name": "Header Auth account"
+          "id": "IPctxAcYwUlITiwD",
+          "name": "Header Auth account 3"
         }
       }
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "http://localhost:5678/webhook/logs",
+        "url": "https://pzaas.online/webhook/logs",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
@@ -296,14 +296,14 @@
       "typeVersion": 4.5,
       "position": [
         672,
-        96
+        560
       ],
-      "id": "2dc14074-98e6-4cb1-a1a7-7bde79adf0be",
+      "id": "b695dee7-e695-4bb0-9af1-4f4e46a79138",
       "name": "HTTP Request1",
       "credentials": {
         "httpHeaderAuth": {
-          "id": "wH1LtDXxghi2XY7n",
-          "name": "Header Auth account"
+          "id": "IPctxAcYwUlITiwD",
+          "name": "Header Auth account 3"
         }
       }
     }
@@ -418,12 +418,12 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "7ce8737e-4567-48f8-b7e1-3ce840f980a2",
+  "versionId": "e70b773b-0f48-4384-a25e-1a718ed15413",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "c41244410a154e1759d7131f52e624ff4a17acef986ca27e83da7a470e6caea3"
+    "instanceId": "8a5832cfccebf1f6e4152d67714b8a9e39672100660b3961e0850a37e9a65b24"
   },
   "nodeGroups": [],
-  "id": "szztbEqCrCOZjUFW",
+  "id": "po0Aa5bjm9RhSqsL",
   "tags": []
 }
