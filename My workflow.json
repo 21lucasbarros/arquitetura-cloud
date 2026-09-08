@@ -187,8 +187,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.5,
       "position": [
-        672,
-        368
+        896,
+        288
       ],
       "id": "6f57a895-1dc1-4fbe-92a4-5940939cacf3",
       "name": "Edit Fields"
@@ -202,8 +202,8 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        896,
-        368
+        1120,
+        288
       ],
       "id": "6350bbdf-842a-439f-8420-2fa2801a2f0f",
       "name": "Respond to Webhook3"
@@ -222,8 +222,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        1120,
-        368
+        1344,
+        288
       ],
       "id": "1cf1bd23-8c01-462c-9006-ea5c5ca53c9c",
       "name": "HTTP Request",
@@ -363,7 +363,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        656,
+        624,
         896
       ],
       "id": "55bf7ee4-8922-41d1-ae37-6c6306202598",
@@ -380,8 +380,8 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        880,
-        800
+        848,
+        816
       ],
       "id": "9a8dfbca-4408-4bb1-9bb2-7fff72f88c53",
       "name": "Respond to Webhook5"
@@ -397,8 +397,8 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1.5,
       "position": [
-        880,
-        992
+        848,
+        976
       ],
       "id": "b1030d19-8392-49e7-8271-8255d00081dc",
       "name": "Respond to Webhook6"
@@ -603,8 +603,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.5,
       "position": [
-        1120,
-        800
+        1088,
+        816
       ],
       "id": "2bf611de-6455-4ff7-870e-07e6b25c2f10",
       "name": "HTTP Request2",
@@ -640,6 +640,57 @@
           "name": "Header Auth account 3"
         }
       }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "f51ef1e6-4652-454e-85c4-7d187c82e9d5",
+              "leftValue": "={{ $json.email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        672,
+        368
+      ],
+      "id": "88b68341-d148-4ee6-a818-9d37f004d3d9",
+      "name": "If5"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"erro\": \"Token invalido ou nao encontrado\"\n}",
+        "options": {
+          "responseCode": 401
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        896,
+        448
+      ],
+      "id": "41a68d3f-d9b2-4a87-b670-5e44c22efe23",
+      "name": "Respond to Webhook9"
     }
   ],
   "pinData": {},
@@ -684,7 +735,7 @@
       "main": [
         [
           {
-            "node": "Edit Fields",
+            "node": "If5",
             "type": "main",
             "index": 0
           }
@@ -865,6 +916,24 @@
           }
         ]
       ]
+    },
+    "If5": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond to Webhook9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
@@ -872,7 +941,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "3774e157-1bc3-43b3-8211-74d4d5e780d2",
+  "versionId": "0027bc53-20e5-4a60-a129-2b252bc62016",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "8a5832cfccebf1f6e4152d67714b8a9e39672100660b3961e0850a37e9a65b24"

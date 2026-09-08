@@ -40,7 +40,14 @@ O microsserviço possui quatro rotas principais rodando de forma isolada (`cadas
 }
 ```
 
-- **Resposta de Sucesso (`HTTP 201 Created`)**: Retorna a mensagem de sucesso e o token gerado pelo banco de dados.
+- **Resposta de Sucesso (`HTTP 201 Created`)**:
+
+```json
+{
+  "mensagem": "Usuario criado com sucesso",
+  "token": "uuid-gerado-pelo-banco"
+}
+```
 
 ### `POST /cadastro_b/login` (Autenticação)
 
@@ -73,11 +80,13 @@ O microsserviço possui quatro rotas principais rodando de forma isolada (`cadas
 
 - **Resposta de Sucesso (`HTTP 200 OK`)**: Retorna os campos `nome`, `perfil` e `email` associados ao token.
 
+- **Resposta de Erro (`HTTP 401 Unauthorized`)**: Retorna `{"erro": "Token invalido ou nao encontrado"}` quando o token não está associado a um usuário.
+
 ---
 
 ## 4. Segurança e Contrato Global
 
-Para garantir a padronização entre todos os microsserviços da arquitetura da pizzaria, este serviço valida rigorosamente os seguintes headers em **todas** as requisições:
+Para garantir a padronização entre todos os microsserviços da arquitetura da pizzaria, as quatro rotas usam autenticação por header e validam rigorosamente os seguintes headers em **todas** as requisições:
 
 - `x-api-key`: Chave de autorização global (`turma2026`).
 
