@@ -6,7 +6,7 @@ Documentação oficial do microsserviço de Cadastro/Identidade (Serviço 08) re
 
 ## 1. Visão Geral
 
-O **Serviço 08** fornece a identidade e os perfis dos usuários do ecossistema PZaaS. Desenvolvido no **n8n** (servidor compartilhado da turma) e integrado ao **PostgreSQL (Neon Tech)**, ele autentica credenciais, cria novas contas e retorna dados cadastrais utilizando tokens seguros.
+O **Serviço 08** fornece a identidade e os perfis dos usuários do ecossistema PZaaS. Desenvolvido no **n8n** (servidor compartilhado da turma) e integrado ao **PostgreSQL (Neon Tech)**, ele autentica credenciais, cria novas contas e retorna dados cadastrais utilizando tokens UUID gerados pelo banco.
 
 ## 2. Tecnologias Utilizadas
 
@@ -78,7 +78,15 @@ O microsserviço possui quatro rotas principais rodando de forma isolada (`cadas
 }
 ```
 
-- **Resposta de Sucesso (`HTTP 200 OK`)**: Retorna os campos `nome`, `perfil` e `email` associados ao token.
+- **Resposta de Sucesso (`HTTP 200 OK`)**:
+
+```json
+{
+  "nome": "Lucas Barros",
+  "perfil": "cliente",
+  "email": "lucas@vpo.tech"
+}
+```
 
 - **Resposta de Erro (`HTTP 401 Unauthorized`)**: Retorna `{"erro": "Token invalido ou nao encontrado"}` quando o token não está associado a um usuário.
 
@@ -86,25 +94,25 @@ O microsserviço possui quatro rotas principais rodando de forma isolada (`cadas
 
 ## 4. Segurança e Contrato Global
 
-Para garantir a padronização entre todos os microsserviços da arquitetura da pizzaria, as quatro rotas usam autenticação por header e validam rigorosamente os seguintes headers em **todas** as requisições:
+As quatro rotas usam a autenticação `headerAuth` configurada no n8n. Na configuração de produção, as portas de entrada seguem estas regras de cabeçalho:
 
 - `x-api-key`: Chave de autorização global (`turma2026`).
 
-- `x-pedido-id`: Identificador de rastreio obrigatório para o fluxo da requisição.
+- `x-pedido-id`: Identificador de rastreio opcional.
 
-> **Tratamento de Falhas (Header)**: Caso a requisição chegue sem o cabeçalho obrigatório `x-pedido-id`, a API intercepta a chamada e retorna imediatamente um `HTTP 400 Bad Request` com o detalhe de que o header é obrigatório.
+As rotas de cadastro e login podem ser chamadas antes da existência de um pedido formal. Por isso, a ausência de `x-pedido-id` não impede o fluxo nem gera erro. Quando enviado, o identificador é utilizado no contexto dos logs de observabilidade.
 
 ---
 
 ## 5. Observabilidade e Logs
 
-Em conformidade com os padrões da arquitetura distribuída, o serviço implementa **observabilidade assíncrona**:
+Em conformidade com os padrões da arquitetura distribuída, o serviço implementa **observabilidade assíncrona e resiliente**:
 
 - O serviço é identificado no ecossistema global pelo **ID 8** (Cadastro/Identidade).
 
-- As ações de sucesso como `CRIAR_USUARIO`, `LOGIN` e `CONSULTAR_PERFIL` disparam logs estruturados em segundo plano (`POST /logs`) para o microsserviço de Logger da turma.
-
-- Tentativas de acesso sem o cabeçalho obrigatório disparam automaticamente um log de alerta no nível `WARN` sob a ação `VALIDAR_CABECALHO`.
+- As ações de sucesso `CRIAR_USUARIO`, `LOGIN` e `CONSULTAR_PERFIL` disparam logs estruturados em segundo plano para `POST /logs` no microsserviço de Logger da turma.
+- O envio dos logs ocorre depois da resposta ao cliente. Assim, uma indisponibilidade do Logger, como um erro 404, não impede a conclusão da operação de identidade.
+- O log de `CRIAR_USUARIO` usa `onError: continueRegularOutput`, garantindo explicitamente que uma falha no Logger não interrompa o fluxo principal.
 
 ---
 
@@ -113,8 +121,8 @@ Em conformidade com os padrões da arquitetura distribuída, o serviço implemen
 Utilize a URL de produção do servidor da turma para realizar os testes práticos. Configure a aba **Headers** em todas as requisições:
 
 - `Content-Type`: `application/json` (para as requisições POST)
-- `x-api-key`: `turma2026`
-- `x-pedido-id`: `12345` (ou qualquer valor numérico de rastreio)
+- `x-api-key`: `turma2026` (conforme a credencial `headerAuth` configurada no ambiente)
+- `x-pedido-id`: `12345` (opcional; teste com e sem esse header)
 
 **URLs de Acesso:**
 
@@ -122,3 +130,5 @@ Utilize a URL de produção do servidor da turma para realizar os testes prátic
 2. **Fazer Login**: `POST` [https://pzaas.online/webhook/cadastro_b/login](https://pzaas.online/webhook/cadastro_b/login)
 3. **Consultar Perfil**: `POST` [https://pzaas.online/webhook/cadastro_b/perfil](https://pzaas.online/webhook/cadastro_b/perfil)
 4. **Verificar Saúde**: `GET` [https://pzaas.online/webhook/cadastro_b/health](https://pzaas.online/webhook/cadastro_b/health)
+
+Os endpoints de cadastro, login e perfil consultam ou alteram a tabela `usuarios_pzaas`. O cadastro cria o perfil padrão `cliente` e gera o token com `gen_random_uuid()`. O login compara `email` e `senha` diretamente no banco; a proteção da senha não é realizada pelo workflow atual.
