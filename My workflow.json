@@ -110,12 +110,21 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://pzaas.online/webhook/logs",
+        "url": "https://pzaas.online/webhook/v1/log",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-pedido-id",
+              "value": "={{ $('/perfil').item.json.headers['x-pedido-id'] }}"
+            }
+          ]
+        },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"eventId\": \"{{ $execution.id }}\",\n  \"service\": \"8\",\n  \"action\": \"CONSULTAR_PERFIL\",\n  \"status\": \"SUCCESS\",\n  \"level\": \"INFO\",\n  \"message\": \"Perfil de usuário consultado com sucesso\",\n  \"orderId\": \"{{ $('/perfil').item.json.headers['x-pedido-id'] }}\",\n  \"metadata\": {\n    \"emailConsultado\": \"{{ $json.email }}\"\n  }\n}",
+        "jsonBody": "={\n  \"eventId\": \"{{ $execution.id }}\",\n  \"service\": 8,\n  \"action\": \"CONSULTAR_PERFIL\",\n  \"status\": \"SUCCESS\",\n  \"level\": \"INFO\",\n  \"message\": \"Perfil de usuário consultado com sucesso\",\n  \"metadata\": {\n    \"emailConsultado\": \"{{ $json.email }}\"\n  }\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -131,7 +140,8 @@
           "id": "IPctxAcYwUlITiwD",
           "name": "Header Auth account 3"
         }
-      }
+      },
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
@@ -363,12 +373,21 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://pzaas.online/webhook/logs",
+        "url": "https://pzaas.online/webhook/v1/log",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-pedido-id",
+              "value": "={{ $('/login').item.json.headers['x-pedido-id'] }}"
+            }
+          ]
+        },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"eventId\": \"{{ $execution.id }}\",\n  \"service\": \"8\",\n  \"action\": \"LOGIN\",\n  \"status\": \"SUCCESS\",\n  \"level\": \"INFO\",\n  \"message\": \"Login realizado com sucesso\",\n  \"orderId\": \"{{ $('/login').item.json.headers['x-pedido-id'] }}\",\n  \"metadata\": {\n    \"emailLogin\": \"{{ $('/login').item.json.body.email }}\"\n  }\n}",
+        "jsonBody": "={\n  \"eventId\": \"{{ $execution.id }}\",\n  \"service\": 8,\n  \"action\": \"LOGIN\",\n  \"status\": \"SUCCESS\",\n  \"level\": \"INFO\",\n  \"message\": \"Login realizado com sucesso\",\n  \"metadata\": {\n    \"emailLogin\": \"{{ $('/login').item.json.body.email }}\"\n  }\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -384,17 +403,27 @@
           "id": "IPctxAcYwUlITiwD",
           "name": "Header Auth account 3"
         }
-      }
+      },
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "https://pzaas.online/webhook/logs",
+        "url": "https://pzaas.online/webhook/v1/log",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-pedido-id",
+              "value": "={{ $('/cadastro').item.json.headers['x-pedido-id'] }}"
+            }
+          ]
+        },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"eventId\": \"{{ $execution.id }}\",\n  \"service\": \"8\",\n  \"action\": \"CRIAR_USUARIO\",\n  \"status\": \"SUCCESS\",\n  \"level\": \"INFO\",\n  \"message\": \"Novo usuário cadastrado com sucesso\",\n  \"orderId\": \"{{ $('/cadastro').item.json.headers['x-pedido-id'] }}\",\n  \"metadata\": {\n    \"emailCadastrado\": \"{{ $('/cadastro').item.json.body.email }}\",\n    \"nomeCadastrado\": \"{{ $('/cadastro').item.json.body.nome }}\"\n  }\n}",
+        "jsonBody": "={\n  \"eventId\": \"{{ $execution.id }}\",\n  \"service\": 8,\n  \"action\": \"CRIAR_USUARIO\",\n  \"status\": \"SUCCESS\",\n  \"level\": \"INFO\",\n  \"message\": \"Novo usuário cadastrado com sucesso\",\n  \"metadata\": {\n    \"emailCadastrado\": \"{{ $('/cadastro').item.json.body.email }}\",\n    \"nomeCadastrado\": \"{{ $('/cadastro').item.json.body.nome }}\"\n  }\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -630,7 +659,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "b69e0592-b975-4613-93bb-1e7adc86169f",
+  "versionId": "a53faa71-fe56-454c-9be0-a247744e16f5",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "8a5832cfccebf1f6e4152d67714b8a9e39672100660b3961e0850a37e9a65b24"

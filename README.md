@@ -23,13 +23,11 @@ O microsserviço possui quatro rotas principais rodando de forma isolada (`cadas
 ### `GET /cadastro_b/health` (Healthcheck)
 
 - **Objetivo**: Verificar se o microsserviço está online.
-
 - **Resposta de Sucesso (`HTTP 200 OK`)**: Retorna `{"status": "tudo certo"}`.
 
 ### `POST /cadastro_b/cadastro` (Criação de Usuário)
 
 - **Objetivo**: Registrar um novo cliente e gerar um token de acesso.
-
 - **Body (JSON)**:
 
 ```json
@@ -52,7 +50,6 @@ O microsserviço possui quatro rotas principais rodando de forma isolada (`cadas
 ### `POST /cadastro_b/login` (Autenticação)
 
 - **Objetivo**: Validar credenciais e devolver o token de acesso do usuário.
-
 - **Body (JSON)**:
 
 ```json
@@ -69,7 +66,6 @@ O microsserviço possui quatro rotas principais rodando de forma isolada (`cadas
 ### `POST /cadastro_b/perfil` (Consulta de Perfil)
 
 - **Objetivo**: Receber um token de acesso e retornar os dados detalhados do usuário.
-
 - **Body (JSON)**:
 
 ```json
@@ -97,22 +93,23 @@ O microsserviço possui quatro rotas principais rodando de forma isolada (`cadas
 As quatro rotas usam a autenticação `headerAuth` configurada no n8n. Na configuração de produção, as portas de entrada seguem estas regras de cabeçalho:
 
 - `x-api-key`: Chave de autorização global (`turma2026`).
-
 - `x-pedido-id`: Identificador de rastreio opcional.
 
-As rotas de cadastro e login podem ser chamadas antes da existência de um pedido formal. Por isso, a ausência de `x-pedido-id` não impede o fluxo nem gera erro. Quando enviado, o identificador é utilizado no contexto dos logs de observabilidade.
+As rotas de cadastro e login podem ser chamadas antes da existência de um pedido formal. Por isso, a ausência de `x-pedido-id` não impede o fluxo nem gera erro. Quando enviado, o identificador é repassado via Header para a API de logs.
 
 ---
 
 ## 5. Observabilidade e Logs
 
-Em conformidade com os padrões da arquitetura distribuída, o serviço implementa **observabilidade assíncrona e resiliente**:
+Em conformidade com os novos padrões da arquitetura distribuída, o serviço implementa **observabilidade assíncrona e resiliente** integrada à Logger API:
 
-- O serviço é identificado no ecossistema global pelo **ID 8** (Cadastro/Identidade).
+- O serviço é identificado no ecossistema global pelo número inteiro **8**.
 
-- As ações de sucesso `CRIAR_USUARIO`, `LOGIN` e `CONSULTAR_PERFIL` disparam logs estruturados em segundo plano para `POST /logs` no microsserviço de Logger da turma.
-- O envio dos logs ocorre depois da resposta ao cliente. Assim, uma indisponibilidade do Logger, como um erro 404, não impede a conclusão da operação de identidade.
-- O log de `CRIAR_USUARIO` usa `onError: continueRegularOutput`, garantindo explicitamente que uma falha no Logger não interrompa o fluxo principal.
+- As ações de sucesso `CRIAR_USUARIO`, `LOGIN` e `CONSULTAR_PERFIL` disparam logs estruturados em segundo plano para o novo endpoint `POST /v1/log` do microsserviço da turma.
+
+- O identificador de rastreio (`x-pedido-id`) é encaminhado para a Logger API de forma nativa através dos cabeçalhos da requisição HTTP (e não mais pelo body).
+
+- **Tolerância a Falhas**: O envio dos logs nas três rotas utiliza a configuração `onError: continueRegularOutput`. Isso garante explicitamente que uma indisponibilidade do Logger (como erros 404 ou 503) seja ignorada pelo sistema, não interrompendo a jornada do cliente e concluindo a operação de identidade com sucesso.
 
 ---
 
@@ -126,9 +123,9 @@ Utilize a URL de produção do servidor da turma para realizar os testes prátic
 
 **URLs de Acesso:**
 
-1. **Criar Usuário**: `POST` [https://pzaas.online/webhook/cadastro_b/cadastro](https://pzaas.online/webhook/cadastro_b/cadastro)
-2. **Fazer Login**: `POST` [https://pzaas.online/webhook/cadastro_b/login](https://pzaas.online/webhook/cadastro_b/login)
-3. **Consultar Perfil**: `POST` [https://pzaas.online/webhook/cadastro_b/perfil](https://pzaas.online/webhook/cadastro_b/perfil)
-4. **Verificar Saúde**: `GET` [https://pzaas.online/webhook/cadastro_b/health](https://pzaas.online/webhook/cadastro_b/health)
+1. **Verificar Saúde**: `GET` [Abrir endpoint de healthcheck](https://pzaas.online/webhook/cadastro_b/health)
+2. **Criar Usuário**: `POST` [Abrir endpoint de cadastro](https://pzaas.online/webhook/cadastro_b/cadastro)
+3. **Fazer Login**: `POST` [Abrir endpoint de login](https://pzaas.online/webhook/cadastro_b/login)
+4. **Consultar Perfil**: `POST` [Abrir endpoint de perfil](https://pzaas.online/webhook/cadastro_b/perfil)
 
 Os endpoints de cadastro, login e perfil consultam ou alteram a tabela `usuarios_pzaas`. O cadastro cria o perfil padrão `cliente` e gera o token com `gen_random_uuid()`. O login compara `email` e `senha` diretamente no banco; a proteção da senha não é realizada pelo workflow atual.
